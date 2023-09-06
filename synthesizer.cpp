@@ -8,17 +8,7 @@ const int SAMPLES_PER_FRAME = 512;
 const double FREQUENCY = 220.0;
 const double AMPLITUDE = 32767.0;
 
-void AudioCallback(void* userdata, Uint8* stream, int len) {
-    Sint16* audioStream = reinterpret_cast<Sint16*>(stream);
-    double angularFrequency = 2.0 * M_PI * FREQUENCY / SAMPLE_RATE;
-    static int t = 0;
-
-    for (int i = 0; i < len / sizeof(Sint16); i += NUM_CHANNELS) {
-        double sample = AMPLITUDE * sin(angularFrequency * t++);
-        audioStream[i] = static_cast<Sint16>(sample);
-        audioStream[i + 1] = static_cast<Sint16>(sample);
-    }
-}
+void AudioCallback(void* userdata, Uint8* stream, int len);
 
 int main() {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -56,4 +46,17 @@ int main() {
     SDL_CloseAudioDevice(audioDevice);
     SDL_Quit();
     return 0;
+}
+
+
+void AudioCallback(void* userdata, Uint8* stream, int len) {
+    Sint16* audioStream = reinterpret_cast<Sint16*>(stream);
+    double angularFrequency = 2.0 * M_PI * FREQUENCY / SAMPLE_RATE;
+    static int t = 0;
+
+    for (int i = 0; i < len / sizeof(Sint16); i += NUM_CHANNELS) {
+        double sample = AMPLITUDE * sin(angularFrequency * t++);
+        audioStream[i] = static_cast<Sint16>(sample);
+        audioStream[i + 1] = static_cast<Sint16>(sample);
+    }
 }
