@@ -24,14 +24,19 @@ int main(int argc, char* argv[]) {
     bool quit = false;
     while (!quit) {
         // Display a prompt and get user input
-        std::cout << "Enter frequencies in Hz, (to exit, enter 0): ";
+        std::cout << "I recommend you lower your computer volume as this can get loud" << std::endl;
+        std::cout << "Enter frequencies in Hz, press enter, and then enter 0 to play your sound (to exit, enter only 0): ";
         std::vector<int> frequencies;
         int freq;
 
-        //fil a vector of desired frequencies
-        while (std::cin >> freq && freq != 0){
-            frequencies.push_back(freq);
-        }
+        //fill a vector of desired frequencies
+        do {
+            std::cin >> freq;
+            if (freq != 0) {
+                frequencies.push_back(freq);
+            }
+        } while (freq != 0);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (frequencies.empty()) {
             // empty freq list or user hopes to quit
             break;
@@ -67,6 +72,7 @@ int main(int argc, char* argv[]) {
         while (!frequencies.empty()) {
             int input;
             std::cin >> input;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             if (input == 0){
                 frequencies.clear();
             }
